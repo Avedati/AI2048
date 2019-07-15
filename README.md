@@ -14,3 +14,13 @@ On Windows or macOS, installing the SFML library entails navigating to this link
 https://www.sfml-dev.org
 
 and downloading and installing the SFML library using the instructions in the readme file that is packaged with SFML.
+
+## Compiling the program
+
+Once you have the dependencies (C++11 and SFML) installed, type the following command into a terminal to compile and run the
+game:
+
+```
+make
+./bin/ai2048
+```
