@@ -5,6 +5,8 @@ This is a clone of the popular 2048 game. I wrote this program in C++11 using th
 ## Getting Started
 
 Compiling the game requires installation of the SFML library and C++11. If you are on linux, you can install C++11 and SFML
-from your package manager. If you are on Windows or macOS, I recommend installing g++ from this link: http://gcc.gnu.org
-On Windows or macOS, installing the SFML library entails navigating to this link: https://www.sfml-dev.org
+from your package manager. If you are on Windows or macOS, I recommend installing g++ from this link:
+http://gcc.gnu.org
+On Windows or macOS, installing the SFML library entails navigating to this link:
+https://www.sfml-dev.org
 and downloading and installing the SFML library using the instructions in the README file that is packaged with SFML.
