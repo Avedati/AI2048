@@ -13,4 +13,4 @@ On Windows or macOS, installing the SFML library entails navigating to this link
 
 https://www.sfml-dev.org
 
-and downloading and installing the SFML library using the instructions in the README file that is packaged with SFML.
+and downloading and installing the SFML library using the instructions in the readme file that is packaged with SFML.
