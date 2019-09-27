@@ -13,6 +13,15 @@
 #define BOARD_ROWS 4 
 #define NUM_ITERATIONS 100
 
+/*
+  bool boardsAreEqual(int** a, int** b)
+  
+  Returns true if each integer in the first board (a) is equal to it's counterpart in the second board (b).
+  
+  @param a The first board, represented as a pointer to a pointer of type int (a double integer array).
+  @param b The second board, represented as a pointer to a pointer of type int (a double integer array).
+  @return true if the boards are equal (as described above) else false.
+*/
 bool boardsAreEqual(int** a, int** b) {
 	for(int y=0;y<BOARD_ROWS;y++) {
 		for(int x=0;x<BOARD_COLS;x++) {
@@ -22,6 +31,14 @@ bool boardsAreEqual(int** a, int** b) {
 	return true;
 }
 
+/*
+  void copyBoard(int** src, int** dst)
+  
+  Copies every integer value from src into dst.
+  
+  @param src The source board, represented as a pointer to a pointer of type int (a double integer array).
+  @param dst The destination board, represented as a pointer to a pointer of type int (a double integer array).
+*/
 void copyBoard(int** src, int** dst) {
 	for(int y=0;y<BOARD_ROWS;y++) {
 		for(int x=0;x<BOARD_COLS;x++) {
@@ -30,11 +47,25 @@ void copyBoard(int** src, int** dst) {
 	}
 }
 
+/*
+  void freeBoard(int** board)
+  
+  Deletes every row of the board, and then the board itself.
+  
+  @param board The specified board, represented as a pointer to a pointer of type int (a double integer array).
+*/
 void freeBoard(int** board) {
 	for(int y=0;y<BOARD_ROWS;y++) { delete board[y]; }
 	delete board;
 }
 
+/*
+  void shift(int** board)
+  
+  This function moves all zeros in each row to the right side of that row.
+  
+  @param board The specified board, represented as a pointer to a pointer of type int (a double integer array).
+*/
 void shift(int** board) {
 	int** copiedBoard = new int*[BOARD_ROWS];
 	for(int y=0;y<BOARD_ROWS;y++) {
@@ -54,6 +85,15 @@ void shift(int** board) {
 	freeBoard(copiedBoard);
 }
 
+/*
+  int combine(int** board)
+  
+  This function performs a shift left move (combining horizontally adjacent tiles with the same value,
+  and moving all zeros in each row to the end of that row.
+  
+  @param board The specified board, represented as a pointer to a pointer of type int (a double integer array).
+  @return The score earned from this move (used for the AI / Game Theory portion).
+*/
 int combine(int** board) {
 	int score = 0;
 	shift(board);
@@ -70,6 +110,14 @@ int combine(int** board) {
 	return score;
 }
 
+/*
+  void spawn(int** board)
+  
+  This function places either a 2 or a 4 in a previously empty position in the board.
+  It has a 90% chance of placing a 2 and a 10% chance of placing a 4.
+  
+  @param board The specified board, represented as a pointer to a pointer of type int (a double integer array).
+*/
 void spawn(int** board) {
 	int xs[BOARD_ROWS * BOARD_COLS];
 	int ys[BOARD_ROWS * BOARD_COLS];
@@ -85,6 +133,13 @@ void spawn(int** board) {
 	}
 }
 
+/*
+  void rotateC(int** board)
+  
+  This function will rotate the board clockwise.
+  
+  @param board The specified board, represented as a pointer to a pointer of type int (a double integer array).
+*/
 void rotateC(int** board) {
 	int** copiedBoard = new int*[BOARD_ROWS];
 	for(int y=0;y<BOARD_ROWS;y++) {
@@ -101,16 +156,39 @@ void rotateC(int** board) {
 	freeBoard(copiedBoard);
 }
 
+/*
+  void rotateCC(int** board)
+  
+  This function rotates the board counter-clockwise (obtained by rotating the board clockwise 3 times).
+  
+  @param board The specified board, represented as a pointer to a pointer of type int (a double integer array).
+*/
 void rotateCC(int** board) {
 	for(int i=0;i<3;i++) { rotateC(board); }
 }
 
+/*
+  int left(int** board)
+  
+  This function performs a left move.
+  
+  @param board The specified board, represented as a pointer to a pointer of type int (a double integer array).
+  @return The score obtained from completing this move.
+*/
 int left(int** board) {
 	int result = combine(board);
 	spawn(board);
 	return result;
 }
 
+/*
+  int up(int** board)
+  
+  This function performs an up move.
+  
+  @param board The specified board, represented as a pointer to a pointer of type int (a double integer array).
+  @return The score obtained from completing this move.
+*/
 int up(int** board) {
 	rotateCC(board);
 	int result = left(board);
@@ -118,6 +196,14 @@ int up(int** board) {
 	return result;
 }
 
+/*
+  int right(int** board)
+  
+  This function performs a right move.
+  
+  @param board The specified board, represented as a pointer to a pointer of type int (a double integer array).
+  @return The score obtained from completing this move.
+*/
 int right(int** board) {
 	rotateC(board); rotateC(board);
 	int result = left(board);
@@ -125,6 +211,14 @@ int right(int** board) {
 	return result;
 }
 
+/*
+  int down(int** board)
+  
+  This function performs a down move.
+  
+  @param board The specified board, represented as a pointer to a pointer of type int (a double integer array).
+  @return The score obtained from completing this move.
+*/
 int down(int** board) {
 	rotateC(board);
 	int result = left(board);
@@ -132,6 +226,15 @@ int down(int** board) {
 	return result;
 }
 
+/*
+  int move(int idx, int** board)
+  
+  This function will move left, up, right, or down based on the index provided.
+  
+  @param idx An integer representing which move to make (0 = left, 1 = up, 2 = right, 3 = down)
+  @param board The specified board, represented as a pointer to a pointer of type int (a double integer array).
+  @return The score obtained from completing this move, or -1 if the move index was not recognized.
+*/
 int move(int idx, int** board) {
 	switch(idx) {
 		case 0:
@@ -148,6 +251,15 @@ int move(int idx, int** board) {
 	return -1;
 }
 
+/*
+  bool gameFinished(int** board)
+  
+  This function returns true if the game is finished (there are no more open spots in the board,
+  and the user cannot make any more moves). Otherwise, it returns false.
+  
+  @param board The specified board, represented as a pointer to a pointer of type int (a double integer array).
+  @return true if the game is finished (as specified above) otherwise false.
+*/
 bool gameFinished(int** board) {
 	for(int y=0;y<BOARD_ROWS;y++) {
 		for(int x=0;x<BOARD_COLS;x++) {
@@ -170,6 +282,16 @@ bool gameFinished(int** board) {
 	return true;
 }
 
+/*
+  bool canMakeMove(int moveIndex, int** board)
+  
+  This function returns true if the move represented by moveIndex can be performed
+  on the specified board. Otherwise, it returns false.
+  
+  @param moveIndex An integer representing which move to make (0 = left, 1 = up, 2 = right, 3 = down)
+  @param board The specified board, represented as a pointer to a pointer of type int (a double integer array).
+  @return true if the move represented by moveIndex can be performed on the specified board otherwise false.
+*/
 bool canMakeMove(int moveIndex, int** board) {
 	int** copiedBoard = new int*[BOARD_ROWS];
 	for(int y=0;y<BOARD_ROWS;y++) { copiedBoard[y] = new int[BOARD_COLS]; }
@@ -180,6 +302,16 @@ bool canMakeMove(int moveIndex, int** board) {
 	return result;
 }
 
+/*
+  int aiGetMove(int** board)
+
+  This function returns an integer representing the AI's choice of move.
+  The AI / Game Theory Implementation uses the algorithm shown below to determine it's move.
+  https://en.wikipedia.org/wiki/Monte_Carlo_tree_search
+  
+  @param board The specified board, represented as a pointer to a pointer of type int (a double integer array).
+  @return An integer representing which move to make (0 = left, 1 = up, 2 = right, 3 = down)
+*/
 int aiGetMove(int** board) {
 	int scores[4][NUM_ITERATIONS];
 	int score;
@@ -238,6 +370,16 @@ int aiGetMove(int** board) {
 	return -1;
 }
 
+/*
+  int main(int argc, char** argv)
+  
+  This function is called when the program is started. We will setup our window, and display the ai making
+  its moves over and over again until the game is finished. We will use the SFML graphics library to display
+  our graphics.
+  
+  @param argc The number of command line arguments provided ( >= 1 ).
+  @param argv The command line arguments (represented as c strings).
+*/
 int main(int argc, char** argv) {
 	srand(time(0));
 
